@@ -53,6 +53,13 @@ var app = (function () {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
     }
+    function self(fn) {
+        return function (event) {
+            // @ts-ignore
+            if (event.target === this)
+                fn.call(this, event);
+        };
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
@@ -484,9 +491,9 @@ var app = (function () {
     			div0 = element("div");
     			p = element("p");
     			t = text(/*message*/ ctx[0]);
-    			add_location(p, file, 29, 6, 546);
+    			add_location(p, file, 29, 6, 551);
     			attr_dev(div0, "class", "modal svelte-1tfxefx");
-    			add_location(div0, file, 28, 4, 520);
+    			add_location(div0, file, 28, 4, 525);
     			attr_dev(div1, "class", "backdrop svelte-1tfxefx");
     			toggle_class(div1, "promo", /*isPromo*/ ctx[1]);
     			add_location(div1, file, 27, 2, 462);
@@ -498,7 +505,7 @@ var app = (function () {
     			append_dev(p, t);
 
     			if (!mounted) {
-    				dispose = listen_dev(div1, "click", /*click_handler*/ ctx[3], false, false, false);
+    				dispose = listen_dev(div1, "click", self(/*click_handler*/ ctx[3]), false, false, false);
     				mounted = true;
     			}
     		},
@@ -668,7 +675,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "peopleないよーーー";
-    			add_location(p, file$1, 65, 2, 1221);
+    			add_location(p, file$1, 65, 2, 1226);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -697,7 +704,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "こいつは猫ちゃんだーーー";
-    			add_location(p, file$1, 59, 4, 1060);
+    			add_location(p, file$1, 59, 4, 1065);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -761,10 +768,10 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "delete";
     			t8 = space();
-    			add_location(h4, file$1, 57, 3, 1001);
-    			add_location(p, file$1, 61, 3, 1092);
-    			add_location(button, file$1, 62, 3, 1137);
-    			add_location(div, file$1, 56, 2, 992);
+    			add_location(h4, file$1, 57, 3, 1006);
+    			add_location(p, file$1, 61, 3, 1097);
+    			add_location(button, file$1, 62, 3, 1142);
+    			add_location(div, file$1, 56, 2, 997);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -904,7 +911,7 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*toggleModal*/ ctx[3], false, false, false);
+    				dispose = listen_dev(button, "click", /*toggleModal*/ ctx[3], { once: true }, false, false);
     				mounted = true;
     			}
     		},
