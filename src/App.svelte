@@ -1,22 +1,23 @@
 <script>
-	let firstName = "ねこ";
-	let lastName = "ひろし";
-	let beltColor = "red";
+	import Modal from "./Modal.svelte";
 
-	$: fullName = `${firstName}${lastName}`;
+	let showModal = false;
 
-	$: {
-		console.log(fullName);
-	}
+	let people = [
+		{ name: "neko", beltColor: "black", age: 25, id: 1 },
+		{ name: "inu", beltColor: "orange", age: 34, id: 2 },
+		{ name: "ushi", beltColor: "pink", age: 17, id: 3 },
+	];
 
-	const handleClick = () => {
-		beltColor = "blue";
+	const handleClick = (id) => {
+		people = people.filter((person) => person.id != id);
 	};
 
-	//bind:valueで使わない
-	// const handleInput = (e) => {
-	// 	name = e.target.value;
-	// };
+	let num = 4;
+
+	const toggleModal = () => {
+		showModal = !showModal;
+	};
 </script>
 
 <style>
@@ -41,9 +42,27 @@
 	}
 </style>
 
+<!-- {#if num > 20}
+	<p>gereater ehan 20</p>
+{:else if num > 5}
+	<p>gereter ehan 5</p>
+{:else}
+	<p>not greter</p>
+{/if} -->
+
+<Modal message="propsを渡すよー" {showModal} on:click={toggleModal} />
 <main>
-	<h1 style="color:{beltColor}">{fullName}</h1>
-	<button on:click={handleClick}>update-color</button>
-	<input type="text" bind:value={firstName} />
-	<input type="text" bind:value={lastName} />
+	<button on:click={toggleModal}>Open Modal</button>
+	{#each people as person (person.id)}
+		<div>
+			<h4>{person.name}</h4>
+			{#if person.name === 'neko'}
+				<p>こいつは猫ちゃんだーーー</p>
+			{/if}
+			<p>{person.age}歳 , {person.beltColor}</p>
+			<button on:click={() => handleClick(person.id)}>delete</button>
+		</div>
+	{:else}
+		<p>peopleないよーーー</p>
+	{/each}
 </main>
