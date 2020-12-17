@@ -27,7 +27,7 @@
 {#if showModal}
   <div class="backdrop" class:promo={isPromo} on:click|self>
     <div class="modal">
-      <p>{message}</p>
+      <slot />
     </div>
   </div>
 {/if}

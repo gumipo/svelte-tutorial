@@ -1,5 +1,6 @@
 <script>
 	import Modal from "./Modal.svelte";
+	import AddPersonForm from "./AddPersonForm.svelte";
 
 	let showModal = false;
 
@@ -20,28 +21,6 @@
 	};
 </script>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
-
 <!-- {#if num > 20}
 	<p>gereater ehan 20</p>
 {:else if num > 5}
@@ -50,7 +29,9 @@
 	<p>not greter</p>
 {/if} -->
 
-<Modal message="propsを渡すよー" {showModal} on:click={toggleModal} />
+<Modal message="propsを渡すよー" {showModal} on:click={toggleModal}>
+	<AddPersonForm />
+</Modal>
 <main>
 	<button on:click|once={toggleModal}>Open Modal</button>
 	{#each people as person (person.id)}
