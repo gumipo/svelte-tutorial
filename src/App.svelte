@@ -1,5 +1,6 @@
 <script>
 	import Modal from "./Modal.svelte";
+	import AddPersonForm from "./AddPersonForm.svelte";
 
 	let showModal = false;
 
@@ -50,9 +51,11 @@
 	<p>not greter</p>
 {/if} -->
 
-<Modal message="propsを渡すよー" {showModal} on:click={toggleModal} />
+<Modal {showModal} on:click={toggleModal} isPromo={true}>
+	<AddPersonForm />
+</Modal>
 <main>
-	<button on:click|once={toggleModal}>Open Modal</button>
+	<button on:click={toggleModal}>Open Modal</button>
 	{#each people as person (person.id)}
 		<div>
 			<h4>{person.name}</h4>
