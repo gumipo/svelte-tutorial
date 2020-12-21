@@ -115,6 +115,17 @@ var app = (function () {
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
+    function get_binding_group_value(group, __value, checked) {
+        const value = new Set();
+        for (let i = 0; i < group.length; i += 1) {
+            if (group[i].checked)
+                value.add(group[i].__value);
+        }
+        if (!checked) {
+            value.delete(__value);
+        }
+        return Array.from(value);
+    }
     function to_number(value) {
         return value === '' ? null : +value;
     }
@@ -123,6 +134,19 @@ var app = (function () {
     }
     function set_input_value(input, value) {
         input.value = value == null ? '' : value;
+    }
+    function select_option(select, value) {
+        for (let i = 0; i < select.options.length; i += 1) {
+            const option = select.options[i];
+            if (option.__value === value) {
+                option.selected = true;
+                return;
+            }
+        }
+    }
+    function select_value(select) {
+        const selected_option = select.querySelector(':checked') || select.options[0];
+        return selected_option && selected_option.__value;
     }
     function toggle_class(element, name, toggle) {
         element.classList[toggle ? 'add' : 'remove'](name);
@@ -136,6 +160,25 @@ var app = (function () {
     let current_component;
     function set_current_component(component) {
         current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error('Function called outside component initialization');
+        return current_component;
+    }
+    function createEventDispatcher() {
+        const component = get_current_component();
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
     }
     // TODO figure out if we still want to support
     // shorthand events, or if we want to implement
@@ -780,8 +823,28 @@ var app = (function () {
     	let t0;
     	let input1;
     	let t1;
+    	let label0;
+    	let t3;
     	let input2;
-    	let t2;
+    	let t4;
+    	let br0;
+    	let t5;
+    	let input3;
+    	let t6;
+    	let br1;
+    	let t7;
+    	let input4;
+    	let t8;
+    	let br2;
+    	let t9;
+    	let label1;
+    	let t11;
+    	let select;
+    	let option0;
+    	let option1;
+    	let option2;
+    	let option3;
+    	let t16;
     	let button;
     	let mounted;
     	let dispose;
@@ -793,21 +856,78 @@ var app = (function () {
     			t0 = space();
     			input1 = element("input");
     			t1 = space();
+    			label0 = element("label");
+    			label0.textContent = "Skills:";
+    			t3 = space();
     			input2 = element("input");
-    			t2 = space();
+    			t4 = text("fighting");
+    			br0 = element("br");
+    			t5 = space();
+    			input3 = element("input");
+    			t6 = text("sneaking");
+    			br1 = element("br");
+    			t7 = space();
+    			input4 = element("input");
+    			t8 = text("running");
+    			br2 = element("br");
+    			t9 = space();
+    			label1 = element("label");
+    			label1.textContent = "Belt colour:";
+    			t11 = space();
+    			select = element("select");
+    			option0 = element("option");
+    			option0.textContent = "black";
+    			option1 = element("option");
+    			option1.textContent = "orange";
+    			option2 = element("option");
+    			option2.textContent = "brown";
+    			option3 = element("option");
+    			option3.textContent = "white";
+    			t16 = space();
     			button = element("button");
     			button.textContent = "Add Person";
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "placeholder", "name");
-    			add_location(input0, file$1, 16, 2, 238);
-    			attr_dev(input1, "type", "text");
-    			attr_dev(input1, "placeholder", "beltColor");
-    			add_location(input1, file$1, 17, 2, 299);
-    			attr_dev(input2, "type", "number");
-    			attr_dev(input2, "placeholder", "age");
-    			add_location(input2, file$1, 18, 2, 370);
-    			add_location(button, file$1, 19, 2, 431);
-    			add_location(form, file$1, 15, 0, 189);
+    			add_location(input0, file$1, 31, 2, 598);
+    			attr_dev(input1, "type", "number");
+    			attr_dev(input1, "placeholder", "age");
+    			add_location(input1, file$1, 32, 2, 659);
+    			add_location(label0, file$1, 33, 2, 720);
+    			attr_dev(input2, "type", "checkbox");
+    			input2.__value = "fighting";
+    			input2.value = input2.__value;
+    			/*$$binding_groups*/ ctx[8][0].push(input2);
+    			add_location(input2, file$1, 34, 2, 745);
+    			add_location(br0, file$1, 34, 72, 815);
+    			attr_dev(input3, "type", "checkbox");
+    			input3.__value = "sneaking";
+    			input3.value = input3.__value;
+    			/*$$binding_groups*/ ctx[8][0].push(input3);
+    			add_location(input3, file$1, 35, 2, 824);
+    			add_location(br1, file$1, 35, 72, 894);
+    			attr_dev(input4, "type", "checkbox");
+    			input4.__value = "running";
+    			input4.value = input4.__value;
+    			/*$$binding_groups*/ ctx[8][0].push(input4);
+    			add_location(input4, file$1, 36, 2, 903);
+    			add_location(br2, file$1, 36, 70, 971);
+    			add_location(label1, file$1, 37, 2, 980);
+    			option0.__value = "balck";
+    			option0.value = option0.__value;
+    			add_location(option0, file$1, 39, 4, 1046);
+    			option1.__value = "orange";
+    			option1.value = option1.__value;
+    			add_location(option1, file$1, 40, 4, 1087);
+    			option2.__value = "brown";
+    			option2.value = option2.__value;
+    			add_location(option2, file$1, 41, 4, 1130);
+    			option3.__value = "white";
+    			option3.value = option3.__value;
+    			add_location(option3, file$1, 42, 4, 1171);
+    			if (/*beltColor*/ ctx[1] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[11].call(select));
+    			add_location(select, file$1, 38, 2, 1010);
+    			add_location(button, file$1, 44, 2, 1222);
+    			add_location(form, file$1, 30, 0, 549);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -818,19 +938,45 @@ var app = (function () {
     			set_input_value(input0, /*name*/ ctx[0]);
     			append_dev(form, t0);
     			append_dev(form, input1);
-    			set_input_value(input1, /*beltColor*/ ctx[1]);
+    			set_input_value(input1, /*age*/ ctx[2]);
     			append_dev(form, t1);
+    			append_dev(form, label0);
+    			append_dev(form, t3);
     			append_dev(form, input2);
-    			set_input_value(input2, /*age*/ ctx[2]);
-    			append_dev(form, t2);
+    			input2.checked = ~/*skills*/ ctx[3].indexOf(input2.__value);
+    			append_dev(form, t4);
+    			append_dev(form, br0);
+    			append_dev(form, t5);
+    			append_dev(form, input3);
+    			input3.checked = ~/*skills*/ ctx[3].indexOf(input3.__value);
+    			append_dev(form, t6);
+    			append_dev(form, br1);
+    			append_dev(form, t7);
+    			append_dev(form, input4);
+    			input4.checked = ~/*skills*/ ctx[3].indexOf(input4.__value);
+    			append_dev(form, t8);
+    			append_dev(form, br2);
+    			append_dev(form, t9);
+    			append_dev(form, label1);
+    			append_dev(form, t11);
+    			append_dev(form, select);
+    			append_dev(select, option0);
+    			append_dev(select, option1);
+    			append_dev(select, option2);
+    			append_dev(select, option3);
+    			select_option(select, /*beltColor*/ ctx[1]);
+    			append_dev(form, t16);
     			append_dev(form, button);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[4]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[5]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[6]),
-    					listen_dev(form, "submit", prevent_default(/*handleSubmit*/ ctx[3]), false, true, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[5]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[6]),
+    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[7]),
+    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[9]),
+    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[10]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[11]),
+    					listen_dev(form, "submit", prevent_default(/*handleSubmit*/ ctx[4]), false, true, false)
     				];
 
     				mounted = true;
@@ -841,18 +987,33 @@ var app = (function () {
     				set_input_value(input0, /*name*/ ctx[0]);
     			}
 
-    			if (dirty & /*beltColor*/ 2 && input1.value !== /*beltColor*/ ctx[1]) {
-    				set_input_value(input1, /*beltColor*/ ctx[1]);
+    			if (dirty & /*age*/ 4 && to_number(input1.value) !== /*age*/ ctx[2]) {
+    				set_input_value(input1, /*age*/ ctx[2]);
     			}
 
-    			if (dirty & /*age*/ 4 && to_number(input2.value) !== /*age*/ ctx[2]) {
-    				set_input_value(input2, /*age*/ ctx[2]);
+    			if (dirty & /*skills*/ 8) {
+    				input2.checked = ~/*skills*/ ctx[3].indexOf(input2.__value);
+    			}
+
+    			if (dirty & /*skills*/ 8) {
+    				input3.checked = ~/*skills*/ ctx[3].indexOf(input3.__value);
+    			}
+
+    			if (dirty & /*skills*/ 8) {
+    				input4.checked = ~/*skills*/ ctx[3].indexOf(input4.__value);
+    			}
+
+    			if (dirty & /*beltColor*/ 2) {
+    				select_option(select, /*beltColor*/ ctx[1]);
     			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(form);
+    			/*$$binding_groups*/ ctx[8][0].splice(/*$$binding_groups*/ ctx[8][0].indexOf(input2), 1);
+    			/*$$binding_groups*/ ctx[8][0].splice(/*$$binding_groups*/ ctx[8][0].indexOf(input3), 1);
+    			/*$$binding_groups*/ ctx[8][0].splice(/*$$binding_groups*/ ctx[8][0].indexOf(input4), 1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -872,19 +1033,36 @@ var app = (function () {
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("AddPersonForm", slots, []);
+    	let dispatch = createEventDispatcher();
     	let name;
     	let beltColor;
     	let age;
 
+    	// let fighting = false;
+    	// let sneaking = false;
+    	// let running = false;
     	const handleSubmit = () => {
-    		console.log(name, beltColor, age);
+    		console.log(name, beltColor, age, skills);
+
+    		const person = {
+    			name,
+    			beltColor,
+    			age,
+    			skills,
+    			id: Math.floor(Math.random() * 100)
+    		};
+
+    		dispatch("addPerson", person);
     	};
 
+    	let skills = [];
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<AddPersonForm> was created with unknown prop '${key}'`);
     	});
+
+    	const $$binding_groups = [[]];
 
     	function input0_input_handler() {
     		name = this.value;
@@ -892,21 +1070,46 @@ var app = (function () {
     	}
 
     	function input1_input_handler() {
-    		beltColor = this.value;
-    		$$invalidate(1, beltColor);
-    	}
-
-    	function input2_input_handler() {
     		age = to_number(this.value);
     		$$invalidate(2, age);
     	}
 
-    	$$self.$capture_state = () => ({ name, beltColor, age, handleSubmit });
+    	function input2_change_handler() {
+    		skills = get_binding_group_value($$binding_groups[0], this.__value, this.checked);
+    		$$invalidate(3, skills);
+    	}
+
+    	function input3_change_handler() {
+    		skills = get_binding_group_value($$binding_groups[0], this.__value, this.checked);
+    		$$invalidate(3, skills);
+    	}
+
+    	function input4_change_handler() {
+    		skills = get_binding_group_value($$binding_groups[0], this.__value, this.checked);
+    		$$invalidate(3, skills);
+    	}
+
+    	function select_change_handler() {
+    		beltColor = select_value(this);
+    		$$invalidate(1, beltColor);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		dispatch,
+    		name,
+    		beltColor,
+    		age,
+    		handleSubmit,
+    		skills
+    	});
 
     	$$self.$inject_state = $$props => {
+    		if ("dispatch" in $$props) dispatch = $$props.dispatch;
     		if ("name" in $$props) $$invalidate(0, name = $$props.name);
     		if ("beltColor" in $$props) $$invalidate(1, beltColor = $$props.beltColor);
     		if ("age" in $$props) $$invalidate(2, age = $$props.age);
+    		if ("skills" in $$props) $$invalidate(3, skills = $$props.skills);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -917,10 +1120,15 @@ var app = (function () {
     		name,
     		beltColor,
     		age,
+    		skills,
     		handleSubmit,
     		input0_input_handler,
     		input1_input_handler,
-    		input2_input_handler
+    		input2_change_handler,
+    		$$binding_groups,
+    		input3_change_handler,
+    		input4_change_handler,
+    		select_change_handler
     	];
     }
 
@@ -939,19 +1147,22 @@ var app = (function () {
     }
 
     /* src/App.svelte generated by Svelte v3.31.0 */
+
+    const { console: console_1$1 } = globals;
     const file$2 = "src/App.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[7] = list[i];
     	return child_ctx;
     }
 
-    // (32:0) <Modal message="propsを渡すよー" {showModal} on:click={toggleModal}>
+    // (40:0) <Modal message="propsを渡すよー" {showModal} on:click={toggleModal}>
     function create_default_slot(ctx) {
     	let addpersonform;
     	let current;
     	addpersonform = new AddPersonForm({ $$inline: true });
+    	addpersonform.$on("addPerson", /*addPerson*/ ctx[4]);
 
     	const block = {
     		c: function create() {
@@ -961,6 +1172,7 @@ var app = (function () {
     			mount_component(addpersonform, target, anchor);
     			current = true;
     		},
+    		p: noop,
     		i: function intro(local) {
     			if (current) return;
     			transition_in(addpersonform.$$.fragment, local);
@@ -979,14 +1191,14 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(32:0) <Modal message=\\\"propsを渡すよー\\\" {showModal} on:click={toggleModal}>",
+    		source: "(40:0) <Modal message=\\\"propsを渡すよー\\\" {showModal} on:click={toggleModal}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (46:1) {:else}
+    // (54:1) {:else}
     function create_else_block(ctx) {
     	let p;
 
@@ -994,7 +1206,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "peopleないよーーー";
-    			add_location(p, file$2, 46, 2, 1039);
+    			add_location(p, file$2, 54, 2, 1223);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1008,14 +1220,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(46:1) {:else}",
+    		source: "(54:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (40:3) {#if person.name === 'neko'}
+    // (48:3) {#if person.name === 'neko'}
     function create_if_block$1(ctx) {
     	let p;
 
@@ -1023,7 +1235,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "こいつは猫ちゃんだーーー";
-    			add_location(p, file$2, 40, 4, 878);
+    			add_location(p, file$2, 48, 4, 1062);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1037,36 +1249,36 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(40:3) {#if person.name === 'neko'}",
+    		source: "(48:3) {#if person.name === 'neko'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (37:1) {#each people as person (person.id)}
+    // (45:1) {#each people as person (person.id)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let h4;
-    	let t0_value = /*person*/ ctx[6].name + "";
+    	let t0_value = /*person*/ ctx[7].name + "";
     	let t0;
     	let t1;
     	let t2;
     	let p;
-    	let t3_value = /*person*/ ctx[6].age + "";
+    	let t3_value = /*person*/ ctx[7].age + "";
     	let t3;
     	let t4;
-    	let t5_value = /*person*/ ctx[6].beltColor + "";
+    	let t5_value = /*person*/ ctx[7].beltColor + "";
     	let t5;
     	let t6;
     	let button;
     	let t8;
     	let mounted;
     	let dispose;
-    	let if_block = /*person*/ ctx[6].name === "neko" && create_if_block$1(ctx);
+    	let if_block = /*person*/ ctx[7].name === "neko" && create_if_block$1(ctx);
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[4](/*person*/ ctx[6]);
+    		return /*click_handler*/ ctx[5](/*person*/ ctx[7]);
     	}
 
     	const block = {
@@ -1087,10 +1299,10 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "delete";
     			t8 = space();
-    			add_location(h4, file$2, 38, 3, 819);
-    			add_location(p, file$2, 42, 3, 910);
-    			add_location(button, file$2, 43, 3, 955);
-    			add_location(div, file$2, 37, 2, 810);
+    			add_location(h4, file$2, 46, 3, 1003);
+    			add_location(p, file$2, 50, 3, 1094);
+    			add_location(button, file$2, 51, 3, 1139);
+    			add_location(div, file$2, 45, 2, 994);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -1115,9 +1327,9 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*people*/ 2 && t0_value !== (t0_value = /*person*/ ctx[6].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*people*/ 2 && t0_value !== (t0_value = /*person*/ ctx[7].name + "")) set_data_dev(t0, t0_value);
 
-    			if (/*person*/ ctx[6].name === "neko") {
+    			if (/*person*/ ctx[7].name === "neko") {
     				if (if_block) ; else {
     					if_block = create_if_block$1(ctx);
     					if_block.c();
@@ -1128,8 +1340,8 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty & /*people*/ 2 && t3_value !== (t3_value = /*person*/ ctx[6].age + "")) set_data_dev(t3, t3_value);
-    			if (dirty & /*people*/ 2 && t5_value !== (t5_value = /*person*/ ctx[6].beltColor + "")) set_data_dev(t5, t5_value);
+    			if (dirty & /*people*/ 2 && t3_value !== (t3_value = /*person*/ ctx[7].age + "")) set_data_dev(t3, t3_value);
+    			if (dirty & /*people*/ 2 && t5_value !== (t5_value = /*person*/ ctx[7].beltColor + "")) set_data_dev(t5, t5_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -1143,7 +1355,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(37:1) {#each people as person (person.id)}",
+    		source: "(45:1) {#each people as person (person.id)}",
     		ctx
     	});
 
@@ -1175,7 +1387,7 @@ var app = (function () {
     	modal.$on("click", /*toggleModal*/ ctx[3]);
     	let each_value = /*people*/ ctx[1];
     	validate_each_argument(each_value);
-    	const get_key = ctx => /*person*/ ctx[6].id;
+    	const get_key = ctx => /*person*/ ctx[7].id;
     	validate_each_keys(ctx, each_value, get_each_context, get_key);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -1207,8 +1419,8 @@ var app = (function () {
     				each_1_else.c();
     			}
 
-    			add_location(button, file$2, 35, 1, 714);
-    			add_location(main, file$2, 34, 0, 706);
+    			add_location(button, file$2, 43, 1, 903);
+    			add_location(main, file$2, 42, 0, 895);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1231,7 +1443,7 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*toggleModal*/ ctx[3], { once: true }, false, false);
+    				dispose = listen_dev(button, "click", /*toggleModal*/ ctx[3], false, false, false);
     				mounted = true;
     			}
     		},
@@ -1239,7 +1451,7 @@ var app = (function () {
     			const modal_changes = {};
     			if (dirty & /*showModal*/ 1) modal_changes.showModal = /*showModal*/ ctx[0];
 
-    			if (dirty & /*$$scope*/ 512) {
+    			if (dirty & /*$$scope*/ 1024) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1334,10 +1546,19 @@ var app = (function () {
     		$$invalidate(0, showModal = !showModal);
     	};
 
+    	const addPerson = e => {
+    		// console.log(e.detail);
+    		const person = e.detail;
+
+    		$$invalidate(1, people = [person, ...people]);
+    		console.log(people);
+    		$$invalidate(0, showModal = false);
+    	};
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
     	const click_handler = person => handleClick(person.id);
@@ -1349,7 +1570,8 @@ var app = (function () {
     		people,
     		handleClick,
     		num,
-    		toggleModal
+    		toggleModal,
+    		addPerson
     	});
 
     	$$self.$inject_state = $$props => {
@@ -1362,7 +1584,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [showModal, people, handleClick, toggleModal, click_handler];
+    	return [showModal, people, handleClick, toggleModal, addPerson, click_handler];
     }
 
     class App extends SvelteComponentDev {

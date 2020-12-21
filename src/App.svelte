@@ -19,6 +19,14 @@
 	const toggleModal = () => {
 		showModal = !showModal;
 	};
+
+	const addPerson = (e) => {
+		// console.log(e.detail);
+		const person = e.detail;
+		people = [person, ...people];
+		console.log(people);
+		showModal = false;
+	};
 </script>
 
 <!-- {#if num > 20}
@@ -30,10 +38,10 @@
 {/if} -->
 
 <Modal message="propsを渡すよー" {showModal} on:click={toggleModal}>
-	<AddPersonForm />
+	<AddPersonForm on:addPerson={addPerson} />
 </Modal>
 <main>
-	<button on:click|once={toggleModal}>Open Modal</button>
+	<button on:click={toggleModal}>Open Modal</button>
 	{#each people as person (person.id)}
 		<div>
 			<h4>{person.name}</h4>
