@@ -1,4 +1,4 @@
-# svelte-voting-app
+# svelte-tutorial
 
 ## 環境構築
 
