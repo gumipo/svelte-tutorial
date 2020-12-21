@@ -1,1 +1,1 @@
-# svelte-voting-app
+# svelte-tutorial
